@@ -48,7 +48,9 @@ const App = () => {
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/quiz");
+        const response = await axios.get(
+          "https://quiz-backend-ife7.onrender.com/api/quiz"
+        );
         setQuizData(response.data.questions);
         setLoading(false);
       } catch (error) {
