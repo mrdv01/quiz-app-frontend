@@ -1,9 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import useSound from "use-sound";
-import correctSound from "./sounds/correct.mp3";
-import wrongSound from "./sounds/wrong.mp3";
-import timerSound from "./sounds/timer.mp3";
 import { RiTimerLine } from "react-icons/ri";
 import { GiPodiumWinner } from "react-icons/gi";
 
@@ -18,17 +14,43 @@ const App = () => {
   const [timer, setTimer] = useState(10);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
-  const [playCorrect] = useSound(correctSound);
-  const [playWrong] = useSound(wrongSound);
-  const [playTimer, { stop: stopTimer }] = useSound(timerSound);
-  const [countdownPlayed, setCountdownPlayed] = useState(false);
+
+  // Instead of use-sound, we'll use the native Audio API
+  useEffect(() => {
+    // Create audio elements
+    const correctAudio = new Audio("/sounds/correct.mp3");
+    const wrongAudio = new Audio("/sounds/wrong.mp3");
+    const timerAudio = new Audio("/sounds/timer.mp3");
+
+    // Preload the audio files
+    correctAudio.load();
+    wrongAudio.load();
+    timerAudio.load();
+
+    // Add them to window object for global access
+    window.quizSounds = {
+      playCorrect: () => correctAudio.play().catch(() => {}),
+      playWrong: () => wrongAudio.play().catch(() => {}),
+      playTimer: () => timerAudio.play().catch(() => {}),
+      stopTimer: () => {
+        timerAudio.pause();
+        timerAudio.currentTime = 0;
+      },
+    };
+
+    // Cleanup
+    return () => {
+      correctAudio.remove();
+      wrongAudio.remove();
+      timerAudio.remove();
+      delete window.quizSounds;
+    };
+  }, []);
 
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
-        const response = await axios.get(
-          "https://quiz-backend-ife7.onrender.com/api/quiz"
-        );
+        const response = await axios.get("http://localhost:5000/api/quiz");
         setQuizData(response.data.questions);
         setLoading(false);
       } catch (error) {
@@ -45,38 +67,36 @@ const App = () => {
       const countdown = setTimeout(() => setTimer(timer - 1), 1000);
 
       // Play countdown sound when timer reaches 3 seconds
-      if (timer > 4) setCountdownPlayed(false);
-      if (timer <= 4 && !countdownPlayed) {
-        playTimer();
-        setCountdownPlayed(true);
+      if (timer === 4) {
+        window.quizSounds?.playTimer();
       }
 
       return () => {
         clearTimeout(countdown);
         // Stop the timer sound if the user answers before 3 seconds are left
         if (isAnswered && timer <= 4) {
-          stopTimer();
+          window.quizSounds?.stopTimer();
         }
       };
     } else if (timer === 0 && !isAnswered) {
       handleAnswer(false);
     }
-  }, [timer, isAnswered, playTimer, stopTimer]);
+  }, [timer, isAnswered]);
 
   const handleAnswer = (is_correct) => {
     setIsAnswered(true);
     // Stop the timer sound if it's playing and there are 3 or fewer seconds left
     if (timer <= 4) {
-      stopTimer();
+      window.quizSounds?.stopTimer();
     }
 
     if (is_correct) {
       setScore((prev) => prev + 1);
       setStreak(streak + 1);
-      playCorrect();
+      window.quizSounds?.playCorrect();
     } else {
       setStreak(0);
-      playWrong();
+      window.quizSounds?.playWrong();
     }
 
     // Move to the next question after 1 second
@@ -95,7 +115,6 @@ const App = () => {
   };
 
   const updateLeaderboard = (newScore) => {
-    console.log(newScore);
     const scores = JSON.parse(localStorage.getItem("leaderboard")) || [];
     scores.push(newScore);
     scores.sort((a, b) => b - a);
