@@ -39,7 +39,6 @@ https://github.com/user-attachments/assets/644533ab-4c6d-4fe6-a05e-04f9c4dd884e
 
 - **Frontend**: React, TailwindCSS
 - **Backend**: Node.js, Express (simulated using a proxy)
-- **Sound Effects**: `use-sound` library
 - **Icons**: `react-icons`
 
 ## Setup Instructions 🚀
