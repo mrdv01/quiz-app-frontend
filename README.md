@@ -27,6 +27,13 @@ You can preview the live application at: [Live Demo](https://quiz-app-frontend-z
 ### Results Page
 ![image](https://github.com/user-attachments/assets/9448ad4e-d1ea-4b2a-b918-45afdd5ab398)
 
+### video demo
+
+
+https://github.com/user-attachments/assets/644533ab-4c6d-4fe6-a05e-04f9c4dd884e
+
+
+
 
 ## Technologies Used 🛠️
 
