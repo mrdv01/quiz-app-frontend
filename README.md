@@ -45,11 +45,37 @@ You can preview the live application at: [Live Demo](https://quiz-app-frontend-z
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/quiz-app.git
-   cd quiz-app
+   git clone https://github.com/mrdv01/quiz-frontend.git
+   cd quiz-frontend
 2. **Install Dependencies**:
    ```bash
    npm install
 3. **Start the App:**:
    ```bash
    npm run dev
+## 🚀 Backend Setup 
+
+Follow these steps to set up the backend on a different machine:
+
+### 📌 Prerequisites  
+Ensure you have the following installed on the new PC:  
+- **Node.js** (Download from [here](https://nodejs.org/))  
+- **npm** (Comes with Node.js)  
+- **Postman** (Optional, for testing API requests)
+
+---
+
+### 🔧 Steps to Set Up the Backend
+
+1. **Clone the Repository**  
+   ```bash
+   git clone https://github.com/mrdvo1/quiz-backend.git
+   cd quiz-backend
+2. **Install Dependencies**:
+   ```bash
+   npm install
+3. **Start the App:**:
+   ```bash
+   npm run start
+   
+
