@@ -45,7 +45,7 @@ You can preview the live application at: [Live Demo](https://quiz-app-frontend-z
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/mrdv01/quiz-frontend.git
+   git clone https://github.com/mrdv01/quiz-app-frontend
    cd quiz-frontend
 2. **Install Dependencies**:
    ```bash
@@ -69,7 +69,7 @@ Ensure you have the following installed on the new PC:
 
 1. **Clone the Repository**  
    ```bash
-   git clone https://github.com/mrdvo1/quiz-backend.git
+   git clone https://github.com/mrdv01/quiz-backend
    cd quiz-backend
 2. **Install Dependencies**:
    ```bash
