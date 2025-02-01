@@ -15,7 +15,6 @@ const App = () => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
 
-  // Instead of use-sound, we'll use the native Audio API
   useEffect(() => {
     // Create audio elements
     const correctAudio = new Audio("/sounds/correct.mp3");
@@ -27,7 +26,6 @@ const App = () => {
     wrongAudio.load();
     timerAudio.load();
 
-    // Add them to window object for global access
     window.quizSounds = {
       playCorrect: () => correctAudio.play().catch(() => {}),
       playWrong: () => wrongAudio.play().catch(() => {}),
