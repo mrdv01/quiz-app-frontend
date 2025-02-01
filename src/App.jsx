@@ -17,14 +17,14 @@ const App = () => {
 
   useEffect(() => {
     // Create audio elements
+    const timerAudio = new Audio("/sounds/timer.mp3");
     const correctAudio = new Audio("/sounds/correct.mp3");
     const wrongAudio = new Audio("/sounds/wrong.mp3");
-    const timerAudio = new Audio("/sounds/timer.mp3");
 
     // Preload the audio files
+    timerAudio.load();
     correctAudio.load();
     wrongAudio.load();
-    timerAudio.load();
 
     window.quizSounds = {
       playCorrect: () => correctAudio.play().catch(() => {}),
