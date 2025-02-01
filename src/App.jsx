@@ -6,7 +6,6 @@ import wrongSound from "./sounds/wrong.mp3";
 import timerSound from "./sounds/timer.mp3";
 import { RiTimerLine } from "react-icons/ri";
 import { GiPodiumWinner } from "react-icons/gi";
-import { CiStar } from "react-icons/ci";
 
 const App = () => {
   const [quizData, setQuizData] = useState([]);
@@ -21,13 +20,15 @@ const App = () => {
   const [isAnswered, setIsAnswered] = useState(false);
   const [playCorrect] = useSound(correctSound);
   const [playWrong] = useSound(wrongSound);
-  const [playTimer] = useSound(timerSound);
+  const [playTimer, { stop: stopTimer }] = useSound(timerSound);
   const [countdownPlayed, setCountdownPlayed] = useState(false);
 
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/quiz");
+        const response = await axios.get(
+          "https://quiz-backend-ife7.onrender.com/api/quiz"
+        );
         setQuizData(response.data.questions);
         setLoading(false);
       } catch (error) {
@@ -50,16 +51,27 @@ const App = () => {
         setCountdownPlayed(true);
       }
 
-      return () => clearTimeout(countdown);
+      return () => {
+        clearTimeout(countdown);
+        // Stop the timer sound if the user answers before 3 seconds are left
+        if (isAnswered && timer <= 4) {
+          stopTimer();
+        }
+      };
     } else if (timer === 0 && !isAnswered) {
       handleAnswer(false);
     }
-  }, [timer, isAnswered, playTimer]);
+  }, [timer, isAnswered, playTimer, stopTimer]);
 
   const handleAnswer = (is_correct) => {
     setIsAnswered(true);
+    // Stop the timer sound if it's playing and there are 3 or fewer seconds left
+    if (timer <= 4) {
+      stopTimer();
+    }
+
     if (is_correct) {
-      setScore(score + 1);
+      setScore((prev) => prev + 1);
       setStreak(streak + 1);
       playCorrect();
     } else {
@@ -77,12 +89,13 @@ const App = () => {
         setIsAnswered(false);
       } else {
         setShowResult(true);
-        updateLeaderboard(score);
+        updateLeaderboard(score + (is_correct ? 1 : 0));
       }
     }, 1000);
   };
 
   const updateLeaderboard = (newScore) => {
+    console.log(newScore);
     const scores = JSON.parse(localStorage.getItem("leaderboard")) || [];
     scores.push(newScore);
     scores.sort((a, b) => b - a);
@@ -119,7 +132,7 @@ const App = () => {
           </p>
           <p className="text-xl mt-2 text-gray-700">
             Highest Streak:{" "}
-            <span className="font-bold  text-green-500">{streak}</span>
+            <span className="font-bold text-green-500">{streak}</span>
           </p>
           <div className="flex justify-center gap-2 mt-5">
             <h3 className="text-2xl font-semibold text-gray-800">
