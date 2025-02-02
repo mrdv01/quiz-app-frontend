@@ -2,7 +2,7 @@
 
 A modern and interactive quiz application built with **React**, **TailwindCSS**, and **Node.js**. This app fetches quiz data from an API, provides a timed quiz experience, and includes gamification features like scoring, streaks, and a leaderboard.
 ## Live Demo
-You can preview the live application at: [Live Demo](https://quiz-app-frontend-zmls-git-main-mrdevs-projects-a7590997.vercel.app/)
+You can preview the live application at: [Live Demo](https://quiz-app-frontend-1w5a.vercel.app/)
 
 ## Features ✨
 
